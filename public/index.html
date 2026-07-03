@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Twine — a thread just for two</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="knot-bg" aria-hidden="true"></div>
+
+<!-- ============ AUTH VIEW ============ -->
+<main id="view-auth" class="view view--center active">
+  <div class="auth-card">
+    <div class="brand">
+      <svg class="brand-mark" width="40" height="40" viewBox="0 0 40 40" fill="none">
+        <path d="M8 14 C8 8, 32 8, 32 14 C32 20, 12 20, 12 26 C12 32, 32 32, 32 26" stroke="url(#g1)" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="g1" x1="8" y1="8" x2="32" y2="32"><stop stop-color="#E8A657"/><stop offset="1" stop-color="#D9768F"/></linearGradient></defs>
+      </svg>
+      <span class="brand-name">Twine</span>
+    </div>
+    <p class="brand-tag">One thread. Two people. No one else reads it.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="login" role="tab">Sign in</button>
+      <button class="tab" data-tab="register" role="tab">Create account</button>
+    </div>
+
+    <form id="form-login" class="form active" autocomplete="on">
+      <label>Email
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label>Password
+        <input type="password" name="password" required autocomplete="current-password">
+      </label>
+      <p class="form-error" id="login-error"></p>
+      <button type="submit" class="btn btn--primary">Sign in</button>
+    </form>
+
+    <form id="form-register" class="form" autocomplete="on">
+      <label>Your name
+        <input type="text" name="displayName" required autocomplete="name">
+      </label>
+      <label>Email
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label>Password
+        <input type="password" name="password" required autocomplete="new-password" minlength="8">
+        <span class="hint">At least 8 characters.</span>
+      </label>
+      <p class="form-error" id="register-error"></p>
+      <button type="submit" class="btn btn--primary">Create account</button>
+    </form>
+  </div>
+</main>
+
+<!-- ============ PAIRING VIEW ============ -->
+<main id="view-pair" class="view view--center">
+  <div class="auth-card">
+    <div class="brand brand--small">
+      <svg class="brand-mark" width="28" height="28" viewBox="0 0 40 40" fill="none">
+        <path d="M8 14 C8 8, 32 8, 32 14 C32 20, 12 20, 12 26 C12 32, 32 32, 32 26" stroke="url(#g2)" stroke-width="2.5" stroke-linecap="round"/>
+        <defs><linearGradient id="g2" x1="8" y1="8" x2="32" y2="32"><stop stop-color="#E8A657"/><stop offset="1" stop-color="#D9768F"/></linearGradient></defs>
+      </svg>
+      <span class="brand-name">Twine</span>
+    </div>
+
+    <h1 class="pair-heading">Connect your thread</h1>
+    <p class="pair-sub">Share your code with your partner, or enter theirs below. Two people, one code redeemed — that's the whole ceremony.</p>
+
+    <div class="code-block">
+      <span class="code-label">Your connection code</span>
+      <div class="code-display" id="my-code">••••••</div>
+      <button class="btn btn--ghost btn--small" id="copy-code">Copy code</button>
+    </div>
+
+    <div class="braid-divider" aria-hidden="true"></div>
+
+    <form id="form-redeem" class="form active">
+      <label>Partner's code
+        <input type="text" name="code" placeholder="e.g. 7K9-QX2" required autocomplete="off" style="text-transform:uppercase">
+      </label>
+      <p class="form-error" id="pair-error"></p>
+      <button type="submit" class="btn btn--primary">Connect</button>
+    </form>
+
+    <button class="btn btn--link" id="logout-from-pair">Sign out</button>
+  </div>
+</main>
+
+<!-- ============ CHAT VIEW ============ -->
+<main id="view-chat" class="view view--chat">
+  <header class="chat-header">
+    <div class="chat-header-left">
+      <svg class="brand-mark brand-mark--tiny" width="22" height="22" viewBox="0 0 40 40" fill="none">
+        <path d="M8 14 C8 8, 32 8, 32 14 C32 20, 12 20, 12 26 C12 32, 32 32, 32 26" stroke="url(#g3)" stroke-width="3" stroke-linecap="round"/>
+        <defs><linearGradient id="g3" x1="8" y1="8" x2="32" y2="32"><stop stop-color="#E8A657"/><stop offset="1" stop-color="#D9768F"/></linearGradient></defs>
+      </svg>
+      <div>
+        <div class="partner-name" id="partner-name">—</div>
+        <div class="partner-status" id="partner-status">offline</div>
+      </div>
+    </div>
+    <button class="btn btn--icon" id="menu-btn" title="Options" aria-label="Options">⋯</button>
+  </header>
+
+  <div id="options-panel" class="options-panel">
+    <button class="btn btn--ghost btn--small" id="unlink-btn">Unlink from partner</button>
+    <button class="btn btn--ghost btn--small" id="logout-from-chat">Sign out</button>
+  </div>
+
+  <div class="messages" id="messages">
+    <button class="load-more" id="load-more" hidden>Load earlier messages</button>
+  </div>
+
+  <div class="typing-row" id="typing-row" hidden>
+    <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+    <span class="typing-label" id="typing-label"></span>
+  </div>
+
+  <form class="composer" id="composer">
+    <textarea id="composer-input" placeholder="Say something…" rows="1" maxlength="4000"></textarea>
+    <button type="submit" class="btn btn--send" id="send-btn" aria-label="Send">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10L17 3L11 17L9 11L2 10Z" fill="currentColor"/></svg>
+    </button>
+  </form>
+</main>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
